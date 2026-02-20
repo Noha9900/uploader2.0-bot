@@ -1,5 +1,5 @@
 # ==========================================
-# SUPER MIRROR BOT - GLOBAL CONFIG (RENDER READY)
+# SUPER MIRROR BOT - GLOBAL CONFIG (RENDER SAFE)
 # ==========================================
 
 import os
@@ -8,8 +8,11 @@ import json
 # =========================
 # TELEGRAM API
 # =========================
-API_ID = int(os.getenv("API_ID"))
-API_HASH = os.getenv("API_HASH")
+API_ID = int(os.getenv("API_ID", "0"))
+API_HASH = os.getenv("API_HASH", "")
+
+if API_ID == 0 or not API_HASH:
+    raise ValueError("API_ID or API_HASH is missing in Environment Variables")
 
 
 # =========================
@@ -23,9 +26,9 @@ DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 # =========================
 # QUEUE & PERFORMANCE
 # =========================
-MAX_CONCURRENT_DOWNLOADS = int(os.getenv("MAX_CONCURRENT_DOWNLOADS", 5))
-MAX_CONCURRENT_UPLOADS = int(os.getenv("MAX_CONCURRENT_UPLOADS", 3))
-PROGRESS_UPDATE_INTERVAL = int(os.getenv("PROGRESS_UPDATE_INTERVAL", 3))
+MAX_CONCURRENT_DOWNLOADS = int(os.getenv("MAX_CONCURRENT_DOWNLOADS", "5"))
+MAX_CONCURRENT_UPLOADS = int(os.getenv("MAX_CONCURRENT_UPLOADS", "3"))
+PROGRESS_UPDATE_INTERVAL = int(os.getenv("PROGRESS_UPDATE_INTERVAL", "3"))
 
 
 # =========================
@@ -33,7 +36,7 @@ PROGRESS_UPDATE_INTERVAL = int(os.getenv("PROGRESS_UPDATE_INTERVAL", 3))
 # =========================
 MAX_FILE_SIZE = int(os.getenv(
     "MAX_FILE_SIZE",
-    2 * 1024 * 1024 * 1024  # 2GB default
+    str(2 * 1024 * 1024 * 1024)  # 2GB default
 ))
 
 
@@ -47,4 +50,10 @@ REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 # =========================
 # MULTI BOT CONFIGURATION
 # =========================
-BOTS = json.loads(os.getenv("BOTS"))
+try:
+   BOTS = json.loads(os.getenv("BOTS", "[]"))
+except json.JSONDecodeError:
+    raise ValueError("BOTS environment variable is not valid JSON")
+
+if not BOTS:
+    raise ValueError("BOTS is missing or empty in Environment Variables")
