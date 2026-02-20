@@ -1,91 +1,50 @@
 # ==========================================
-# SUPER MIRROR BOT - GLOBAL CONFIG
+# SUPER MIRROR BOT - GLOBAL CONFIG (RENDER READY)
 # ==========================================
 
+import os
+import json
 
 # =========================
 # TELEGRAM API
 # =========================
-API_ID = 123456
-API_HASH = "YOUR_API_HASH"
+API_ID = int(os.getenv("API_ID"))
+API_HASH = os.getenv("API_HASH")
 
 
 # =========================
 # GLOBAL BOT SETTINGS
 # =========================
-DOWNLOAD_PATH = "./tmp"   # Use "/tmp" if deploying on Render
-LOG_LEVEL = "INFO"
-DEBUG = False
+DOWNLOAD_PATH = os.getenv("DOWNLOAD_PATH", "/tmp")
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 
 # =========================
 # QUEUE & PERFORMANCE
 # =========================
-MAX_CONCURRENT_DOWNLOADS = 10
-MAX_CONCURRENT_UPLOADS = 10
-PROGRESS_UPDATE_INTERVAL = 3   # seconds
+MAX_CONCURRENT_DOWNLOADS = int(os.getenv("MAX_CONCURRENT_DOWNLOADS", 5))
+MAX_CONCURRENT_UPLOADS = int(os.getenv("MAX_CONCURRENT_UPLOADS", 3))
+PROGRESS_UPDATE_INTERVAL = int(os.getenv("PROGRESS_UPDATE_INTERVAL", 3))
 
 
 # =========================
 # FILE LIMITS
 # =========================
-# Telegram Bot API limit = 2GB
-# Telegram Premium userbot = 4GB
-MAX_FILE_SIZE = 2 * 1024 * 1024 * 1024   # 2GB
+MAX_FILE_SIZE = int(os.getenv(
+    "MAX_FILE_SIZE",
+    2 * 1024 * 1024 * 1024  # 2GB default
+))
 
 
 # =========================
-# OPTIONAL REDIS (Future Upgrade)
+# OPTIONAL REDIS
 # =========================
-USE_REDIS = False
-REDIS_URL = "redis://localhost:6379"
+USE_REDIS = os.getenv("USE_REDIS", "False").lower() == "true"
+REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 
 
 # =========================
 # MULTI BOT CONFIGURATION
-# Add unlimited bots here
 # =========================
-BOTS = [
-
-    # =========================
-    # BOT 1
-    # =========================
-    {
-        "BOT_NAME": "SuperMirrorBot1",
-
-        "BOT_TOKEN": "BOT_TOKEN_1",
-
-        # Mongo database for this bot
-        "MONGO_URI": "mongodb+srv://user:pass@cluster/db1",
-
-        # Admin users (full control)
-        "ADMIN_IDS": [123456789],
-
-        # If None → Upload to user chat
-        # If set → Upload directly to this channel
-        "CHANNEL_ID": None,
-
-        # Allow public usage?
-        "PUBLIC_MODE": True
-    },
-
-
-    # =========================
-    # BOT 2
-    # =========================
-    {
-        "BOT_NAME": "SuperMirrorBot2",
-
-        "BOT_TOKEN": "BOT_TOKEN_2",
-
-        "MONGO_URI": "mongodb+srv://user:pass@cluster/db2",
-
-        "ADMIN_IDS": [987654321],
-
-        # Example channel ID
-        "CHANNEL_ID": -1001234567xxx,
-
-        "PUBLIC_MODE": False
-    }
-
-]
+BOTS = json.loads(os.getenv("BOTS"))
