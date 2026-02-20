@@ -1,38 +1,52 @@
-# Use lightweight Python image
+# ==============================
+# Base Image
+# ==============================
 FROM python:3.11-slim
 
-# Prevent python from writing pyc files
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+# ==============================
+# Environment Settings
+# ==============================
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
-# Set working directory
-WORKDIR /app
-
-# Install system dependencies (IMPORTANT for ffmpeg + build)
-RUN apt-get update && apt-get install -y \
+# ==============================
+# System Dependencies
+# ==============================
+RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     gcc \
     libffi-dev \
+    build-essential \
     curl \
     git \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first (for caching)
+# ==============================
+# Set Work Directory
+# ==============================
+WORKDIR /app
+
+# ==============================
+# Install Python Dependencies
+# ==============================
 COPY requirements.txt .
 
-# Upgrade pip & install dependencies
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip setuptools wheel \
+    && pip install --no-cache-dir -r requirements.txt
 
-# Copy project files
+# ==============================
+# Copy Application Code
+# ==============================
 COPY . .
 
-# Create download directory
-RUN mkdir -p downloads
+# ==============================
+# Create Runtime Folders
+# ==============================
+RUN mkdir -p /app/downloads \
+    && mkdir -p /app/thumbnails
 
-# Expose nothing (Telegram bot does not need port)
-# EXPOSE 8080  (not required)
-
-# Start bot
+# ==============================
+# Start Application
+# ==============================
 CMD ["python", "main.py"]
