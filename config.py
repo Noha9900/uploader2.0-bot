@@ -1,5 +1,5 @@
 # ==========================================
-# SUPER MIRROR BOT - GLOBAL CONFIG (RENDER SAFE)
+# SUPER MIRROR BOT - GLOBAL CONFIG (FINAL SAFE VERSION)
 # ==========================================
 
 import os
@@ -12,7 +12,7 @@ API_ID = int(os.getenv("API_ID", "36982189"))
 API_HASH = os.getenv("API_HASH", "d3ec5feee7342b692e7b5370fb9c8db7")
 
 if API_ID == 0 or not API_HASH:
-    raise ValueError("API_ID or API_HASH is missing in Environment Variables")
+    print("WARNING: API_ID or API_HASH missing. Using defaults.")
 
 
 # =========================
@@ -51,9 +51,10 @@ REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
 # MULTI BOT CONFIGURATION
 # =========================
 try:
-   BOTS = json.loads(os.getenv("BOTS", "[]"))
-except json.JSONDecodeError:
-    raise ValueError("BOTS environment variable is not valid JSON")
+    BOTS = json.loads(os.getenv("BOTS", "[]"))
+except Exception:
+    print("WARNING: Invalid BOTS JSON. Using empty list.")
+    BOTS = []
 
 if not BOTS:
-    raise ValueError("BOTS is missing or empty in Environment Variables")
+    print("WARNING: No bots configured. Add BOTS in Render Environment Variables.")
