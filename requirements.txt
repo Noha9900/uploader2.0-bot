@@ -1,0 +1,8 @@
+pyrogram
+tgcrypto
+yt-dlp
+motor
+pymongo
+aiohttp
+redis
+ffmpeg-python
