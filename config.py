@@ -13,7 +13,7 @@ API_HASH = "YOUR_API_HASH"
 # =========================
 # GLOBAL BOT SETTINGS
 # =========================
-DOWNLOAD_PATH = "./downloads"   # Use "/tmp" if deploying on Render
+DOWNLOAD_PATH = "./tmp"   # Use "/tmp" if deploying on Render
 LOG_LEVEL = "INFO"
 DEBUG = False
 
