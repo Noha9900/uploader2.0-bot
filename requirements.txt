@@ -1,8 +1,8 @@
-pyrogram
-tgcrypto
-yt-dlp
-motor
-pymongo
-aiohttp
-redis
-ffmpeg-python
+pyrogram==2.0.106
+tgcrypto==1.2.5
+yt-dlp==2025.1.26
+motor==3.3.2
+pymongo==4.6.1
+aiohttp==3.9.3
+redis==5.0.1
+ffmpeg-python==0.2.0
