@@ -8,8 +8,8 @@ import json
 # =========================
 # TELEGRAM API
 # =========================
-API_ID = int(os.getenv("API_ID", "0"))
-API_HASH = os.getenv("API_HASH", "")
+API_ID = int(os.getenv("API_ID", "36982189"))
+API_HASH = os.getenv("API_HASH", "d3ec5feee7342b692e7b5370fb9c8db7")
 
 if API_ID == 0 or not API_HASH:
     raise ValueError("API_ID or API_HASH is missing in Environment Variables")
